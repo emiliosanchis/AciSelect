@@ -1,5 +1,38 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using AciSelect.Components;
+@inject IJSRuntime JsRuntime;
 
-Welcome to your new app.
+<Select2 Name="Patata" DataList="@Data" Value="@Value" InputChanged="OnInputChanged" Style="width:300px;"></Select2>
+
+<Select2 Name="Patata2" DataList="@Data" Value="@Value2" InputChanged="OnInputChanged2" Style="width:300px;"></Select2>
+
+Valor: @Value
+Valor2: @Value2
+
+@code {
+
+    List<Selec2Data> Data;
+    int Value = 0;
+    int Value2 = 0;
+
+    protected override void OnInit()
+    {
+        Data = new List<Selec2Data> { new Selec2Data(1, "Patata"), new Selec2Data(2, "Tomate") };
+    }
+
+
+
+    void OnInputChanged(int Value)
+    {
+        this.Value = Value;
+        StateHasChanged();
+    }
+
+    void OnInputChanged2(int Value)
+    {
+        this.Value2 = Value;
+        StateHasChanged();
+    }
+
+}

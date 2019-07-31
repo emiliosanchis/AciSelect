@@ -1,0 +1,46 @@
+﻿@inject IJSRuntime JsRuntime;
+
+<div style="@Style">
+    <Select id="@Name" class="js-example-basic-single" @oninput="@Oninput" name="state" onchange="selectChange(this)" style="width:100%">
+        <option value="@(0)">&nbsp;</option>
+        @foreach (var item in DataList)
+        {
+            if (item.Value == Value)
+            {
+                <option value="@item.Value" selected>@item.Text</option>
+            }
+            else
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        }
+    </Select>
+</div>
+
+@code {
+    [Parameter] protected string Name { get; set; }
+    [Parameter] protected List<Selec2Data> DataList { get; set; }
+    [Parameter] protected int Value { get; set; }
+    [Parameter] protected string Style { get; set; }
+    [Parameter] private EventCallback<int> InputChanged { get; set; }
+
+    protected override void OnAfterRender()
+    {
+        JsRuntime.InvokeAsync<bool>("JsFunctions.initializeSelect2", Name);
+        base.OnAfterRender();
+    }
+
+    void Oninput(UIChangeEventArgs args)
+    {
+        if ((string)args.Value == String.Empty)
+        {
+            InputChanged.InvokeAsync(0);
+
+        }
+        else
+        {
+            InputChanged.InvokeAsync(int.Parse((string)args.Value));
+        }
+    }
+}
+
